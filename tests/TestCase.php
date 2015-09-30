@@ -4,6 +4,16 @@ namespace tests;
 
 class TestCase
 {
+    public function setUp()
+    {
+
+    }
+
+    public function tearDown()
+    {
+
+    }
+
     protected function assert($condition, $message = '')
     {
         echo $message;
