@@ -6,7 +6,7 @@ use app\models\User;
 
 require(__DIR__ . '/_bootstrap.php');
 
-class UserTest
+class TestCase
 {
     protected function assert($condition, $message = '')
     {
@@ -33,7 +33,10 @@ class UserTest
     {
         $this->assert(array_key_exists($key, $array), $message);
     }
+}
 
+class UserTest extends TestCase
+{
     public function testValidateEmptyValues()
     {
         $user = new User();
