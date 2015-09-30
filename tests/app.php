@@ -11,7 +11,7 @@ class UserTest
     protected function assert($condition, $message = '')
     {
         echo $message;
-        if ($condition) {
+        if ($condition === true) {
             echo ' Ok' . PHP_EOL;
         } else {
             echo ' Fail' . PHP_EOL;
@@ -19,13 +19,28 @@ class UserTest
         }
     }
 
+    protected function assertTrue($condition, $message = '')
+    {
+        $this->assert($condition === true, $message);
+    }
+
+    protected function assertFalse($condition, $message = '')
+    {
+        $this->assert($condition === false, $message);
+    }
+
+    protected function assertArrayHasKey($key, $array, $message = '')
+    {
+        $this->assert(array_key_exists($key, $array), $message);
+    }
+
     public function testValidateEmptyValues()
     {
         $user = new User();
 
-        $this->assert($user->validate() == false, 'model is not valid');
-        $this->assert(array_key_exists('username', $user->getErrors()), 'check username error');
-        $this->assert(array_key_exists('email', $user->getErrors()), 'check email error');
+        $this->assertFalse($user->validate(), 'model is not valid');
+        $this->assertArrayHasKey('username', $user->getErrors(), 'check username error');
+        $this->assertArrayHasKey('email', $user->getErrors(), 'check email error');
     }
 }
 
