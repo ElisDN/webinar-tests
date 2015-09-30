@@ -10,12 +10,12 @@ class UserTest extends TestCase
 {
     public function setUp()
     {
+        parent::setUp();
 
-    }
-
-    public function tearDown()
-    {
-
+        User::deleteAll([
+            'username' => 'TestUsername',
+            'email' => 'test@email.com',
+        ]);
     }
 
     public function testSaveIntoDatabase()
