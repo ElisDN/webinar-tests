@@ -3,11 +3,14 @@
 namespace tests\unit;
 
 use app\models\User;
+use Codeception\Specify;
 use Codeception\TestCase\Test;
 use Yii;
 
 class UserTest extends Test
 {
+    use Specify;
+
     /**
      * @var \UnitTester
      */
@@ -26,43 +29,43 @@ class UserTest extends Test
     {
         $user = new User();
 
-        $this->assertFalse($user->validate(), 'validate empty username and email');
-        $this->assertArrayHasKey('username', $user->getErrors(), 'check empty username error');
-        $this->assertArrayHasKey('email', $user->getErrors(), 'check empty email error');
+        expect('model is not valid', $user->validate())->false();
+        expect('username has error', $user->getErrors())->hasKey('username');
+        expect('email has error', $user->getErrors())->hasKey('email');
     }
 
     public function testValidateWrongValues()
     {
-        $user = new User([
-            'username' => 'Wrong % Username',
-            'email' => 'wrong_email',
-        ]);
+        $user = new User();
 
-        $this->assertFalse($user->validate(), 'validate incorrect username and email');
-        $this->assertArrayHasKey('username', $user->getErrors(), 'check incorrect username error');
-        $this->assertArrayHasKey('email', $user->getErrors(), 'check incorrect email error');
+        $user->username = 'Test User';
+        $user->email = 'test_email.com';
+
+        expect('model is not valid', $user->validate())->false();
+        expect('username has error', $user->getErrors())->hasKey('username');
+        expect('email has error', $user->getErrors())->hasKey('email');
     }
 
     public function testValidateExistedValues()
     {
-        $user = new User([
-            'username' => 'user',
-            'email' => 'user@email.com',
-        ]);
+        $user = new User();
 
-        $this->assertFalse($user->validate(), 'model is not valid');
-        $this->assertArrayHasKey('username', $user->getErrors(), 'check existed username error');
-        $this->assertArrayHasKey('email', $user->getErrors(), 'check existed email error');
+        $user->username = 'user';
+        $user->email = 'user@email.com';
+
+        expect('model is not valid', $user->validate())->false();
+        expect('username has error', $user->getErrors())->hasKey('username');
+        expect('email has error', $user->getErrors())->hasKey('email');
     }
 
     public function testValidateCorrectValues()
     {
-        $user = new User([
-            'username' => 'CorrectUsername',
-            'email' => 'correct@email.com',
-        ]);
+        $user = new User();
 
-        $this->assertTrue($user->validate(), 'correct model is valid');
+        $user->username = 'TestUser';
+        $user->email = 'test@email.com';
+
+        expect('model is not valid', $user->validate())->true();
     }
 
     public function testSaveIntoDatabase()
@@ -72,6 +75,6 @@ class UserTest extends Test
             'email' => 'test@email.com',
         ]);
 
-        $this->assertTrue($user->save(), 'model is saved');
+        expect('model is saved', $user->save())->true();
     }
 }
