@@ -3,6 +3,7 @@
 namespace tests\acceptance;
 
 use \AcceptanceTester;
+use tests\_pages\SearchPage;
 
 class SearchCest
 {
@@ -10,17 +11,11 @@ class SearchCest
     {
         $I->wantTo('ensure that search works');
 
-        $I->amOnPage('/');
+        $page = SearchPage::openBy($I);
 
         $I->see('Найти');
 
-        $I->fillField('input[name=text]', 'Codeception');
-
-        if (method_exists($I, 'wait')) {
-            $I->wait(1); // only for selenium
-        }
-
-        $I->click('button[type=submit]');
+        $page->search('Codeception');
 
         if (method_exists($I, 'wait')) {
             $I->wait(3); // only for selenium
