@@ -13,11 +13,11 @@ class FutureTest extends Test
 
     public function testSomeFuture()
     {
-
+        $this->markTestIncomplete();
     }
 
     public function testOtherFuture()
     {
-
+        $this->markTestIncomplete();
     }
 }
