@@ -11,6 +11,9 @@ class FutureTest extends Test
      */
     protected $tester;
 
+    /**
+     * @group future
+     */
     public function testSomeFuture()
     {
         $this->markTestIncomplete();
@@ -21,6 +24,9 @@ class FutureTest extends Test
         $this->markTestIncomplete();
     }
 
+    /**
+     * @group future
+     */
     public function testSaveToMSSQL()
     {
         if (!extension_loaded('mssql')) {
