@@ -20,4 +20,11 @@ class FutureTest extends Test
     {
         $this->markTestIncomplete();
     }
+
+    public function testSaveToMSSQL()
+    {
+        if (!extension_loaded('mssql')) {
+            $this->markTestSkipped('The MSSQL extension is not available.');
+        }
+    }
 }
