@@ -16,10 +16,10 @@ class EmailValidatorTest extends Test
     {
         $validator = new EmailValidator();
 
-        $this->assertTrue($validator->validate('mail@site.com'));
-        $this->assertTrue($validator->validate('mail.dot@site.com'));
-        $this->assertFalse($validator->validate('mail_site.com'));
-        $this->assertFalse($validator->validate('mail@site'));
-        $this->assertFalse($validator->validate('mail@123'));
+        $this->assertEquals($validator->validate('mail@site.com'), true);
+        $this->assertEquals($validator->validate('mail.dot@site.com'), true);
+        $this->assertEquals($validator->validate('mail_site.com'), false);
+        $this->assertEquals($validator->validate('mail@site'), false);
+        $this->assertEquals($validator->validate('mail@123'), false);
     }
 }
