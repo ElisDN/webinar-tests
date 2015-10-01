@@ -12,22 +12,23 @@ class EmailValidatorTest extends Test
      */
     protected $tester;
 
-    public function testEmail()
+    /**
+     * @dataProvider getEmailVariants
+     */
+    public function testEmail($email, $result)
     {
         $validator = new EmailValidator();
+        $this->assertEquals($validator->validate($email), $result);
+    }
 
-        $variants = [
+    public function getEmailVariants()
+    {
+        return [
             ['mail@site.com', true],
             ['mail.dot@site.com', true],
             ['mail_site.com', false],
             ['mail@site', false],
             ['mail@123', false],
         ];
-
-        foreach ($variants as $variant) {
-            $email = $variant[0];
-            $result = $variant[1];
-            $this->assertEquals($validator->validate($email), $result);
-        }
     }
 }
