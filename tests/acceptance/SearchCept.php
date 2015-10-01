@@ -1,3 +1,9 @@
-<?php 
+<?php
+
+/** @var $scenario \Codeception\Scenario */
+
 $I = new AcceptanceTester($scenario);
-$I->wantTo('perform actions and see result');
+$I->wantTo('ensure that search works');
+
+$I->amOnPage('/');
+$I->see('Найти');
