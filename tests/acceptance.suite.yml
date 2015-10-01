@@ -7,8 +7,14 @@
 class_name: AcceptanceTester
 modules:
     enabled:
-        - PhpBrowser
+#        - PhpBrowser
+        - WebDriver
         - AcceptanceHelper
     config:
-        PhpBrowser:
+#        PhpBrowser:
+#            url: 'https://ya.ru'
+        WebDriver:
             url: 'https://ya.ru'
+            browser: firefox
+            restart: true
+            window_size: 1024x768
