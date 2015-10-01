@@ -23,12 +23,6 @@ class UserTest extends Test
 
     public function _before()
     {
-        User::deleteAll();
-        Yii::$app->db->createCommand()->insert(User::tableName(), [
-            'username' => 'user',
-            'email' => 'user@email.com',
-        ])->execute();
-        
         $this->user = new User();
     }
 
@@ -75,5 +69,10 @@ class UserTest extends Test
         ]);
 
         expect('model is saved', $user->save())->true();
+
+        $this->tester->seeInDatabase('user', [
+            'username' => 'TestUsername',
+            'email' => 'test@email.com',
+        ]);
     }
 }
