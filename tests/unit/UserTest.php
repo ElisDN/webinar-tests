@@ -16,6 +16,11 @@ class UserTest extends Test
      */
     protected $tester;
 
+    /**
+     * @var User
+     */
+    private $user;
+
     public function _before()
     {
         User::deleteAll();
@@ -23,49 +28,43 @@ class UserTest extends Test
             'username' => 'user',
             'email' => 'user@email.com',
         ])->execute();
+        
+        $this->user = new User();
     }
 
-    public function testValidateEmptyValues()
+    public function testValidation()
     {
-        $user = new User();
+        $this->specify('fields are required', function() {
+            $this->user->username = null;
+            $this->user->email = null;
+            expect('model is not valid', $this->user->validate())->false();
+            expect('username has error', $this->user->getErrors())->hasKey('username');
+            expect('email has error', $this->user->getErrors())->hasKey('email');
+        });
 
-        expect('model is not valid', $user->validate())->false();
-        expect('username has error', $user->getErrors())->hasKey('username');
-        expect('email has error', $user->getErrors())->hasKey('email');
-    }
+        $this->specify('fields are wrong', function() {
+            $this->user->username = 'Test User';
+            $this->user->email = 'test_email.com';
+            expect('model is not valid', $this->user->validate())->false();
+            expect('username has error', $this->user->getErrors())->hasKey('username');
+            expect('email has error', $this->user->getErrors())->hasKey('email');
+        });
 
-    public function testValidateWrongValues()
-    {
-        $user = new User();
+        $this->specify('fields are unique', function() {
+            $this->user->username = 'user';
+            $this->user->email = 'user@email.com';
+            expect('model is not valid', $this->user->validate())->false();
+            expect('username has error', $this->user->getErrors())->hasKey('username');
+            expect('email has error', $this->user->getErrors())->hasKey('email');
+        });
 
-        $user->username = 'Test User';
-        $user->email = 'test_email.com';
+        $this->specify('fields are correct', function() {
+            $this->user->username = 'TestUser';
+            $this->user->email = 'test@email.com';
+            expect('model is not valid', $this->user->validate())->true();
+        });
 
-        expect('model is not valid', $user->validate())->false();
-        expect('username has error', $user->getErrors())->hasKey('username');
-        expect('email has error', $user->getErrors())->hasKey('email');
-    }
-
-    public function testValidateExistedValues()
-    {
-        $user = new User();
-
-        $user->username = 'user';
-        $user->email = 'user@email.com';
-
-        expect('model is not valid', $user->validate())->false();
-        expect('username has error', $user->getErrors())->hasKey('username');
-        expect('email has error', $user->getErrors())->hasKey('email');
-    }
-
-    public function testValidateCorrectValues()
-    {
-        $user = new User();
-
-        $user->username = 'TestUser';
-        $user->email = 'test@email.com';
-
-        expect('model is not valid', $user->validate())->true();
+        //expect('', array_filter($this->user->getAttributes()))->equals([]);
     }
 
     public function testSaveIntoDatabase()
