@@ -9,6 +9,7 @@ modules:
     enabled:
 #        - PhpBrowser
         - WebDriver
+        - \tests\codeception\_support\FixtureHelper
     config:
 #        PhpBrowser:
 #            url: 'http://localhost:8080'
