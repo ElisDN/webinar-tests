@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<dataset>
+    <table name="user">
+        <column>username</column>
+        <column>email</column>
+        <row>
+            <value>admin</value>
+            <value>admin@email.com</value>
+        </row>
+        <row>
+            <value>user</value>
+            <value>user@email.com</value>
+        </row>
+    </table>
+</dataset>

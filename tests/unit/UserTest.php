@@ -3,17 +3,21 @@
 namespace tests\unit;
 
 use app\models\User;
+use PHPUnit_Extensions_Database_DataSet_IDataSet;
+use PHPUnit_Extensions_Database_DB_IDatabaseConnection;
 use Yii;
 
-class UserTest extends \PHPUnit_Framework_TestCase
+class UserTest extends \PHPUnit_Extensions_Database_TestCase
 {
-    public function setUp()
+    public function getConnection()
     {
-        User::deleteAll();
-        Yii::$app->db->createCommand()->insert(User::tableName(), [
-            'username' => 'user',
-            'email' => 'user@email.com',
-        ])->execute();
+        $pdo = new \PDO($GLOBALS['DB_DSN'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASSWD']);
+        return $this->createDefaultDBConnection($pdo, $GLOBALS['DB_DBNAME']);
+    }
+
+    public function getDataSet()
+    {
+        return $this->createXMLDataSet(dirname(__FILE__).'/../_data/users.xml');
     }
 
     public function testValidateEmptyValues()
